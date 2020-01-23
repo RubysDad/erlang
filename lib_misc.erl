@@ -10,7 +10,7 @@
 -author("mark").
 
 %% API
--export([for/3]).
+-export([for/3, odds_and_evens2/1]).
 
 %% creating our own custom for loop
 
@@ -26,3 +26,25 @@ for(I, Max, F) -> [F(I)|for(I+1, Max, F)].
 %%  4> lib_misc:for(1, 10, fun(I) -> I*I end).
 %%  [1,4,9,16,25,36,49,64,81,100]
 
+%% Split list of ints into two lists
+%%odds_and_evens1(L) ->
+%%  Odds = [X || X <- L, (X rem 2) =:= 1],
+%%  Evens = [X || X <- L, (X rem 2) =:= 0],
+%%  {Odds, Evens}.
+
+%%  lib_misc:odds_and_evens1([1,2,3,4,5,6]).
+%%  {[1,3,5],[2,4,6]}
+
+%% Better way to do it
+odds_and_evens2(L) ->
+  odds_and_evens_acc(L, [], []).
+
+odds_and_evens_acc([H|T], Odds, Evens) ->
+  case (H rem 2) of
+    1 -> odds_and_evens_acc(T, [H|Odds], Evens);
+    0 -> odds_and_evens_acc(T, Odds, [H|Evens])
+  end;
+  odds_and_evens_acc([], Odds, Evens) ->
+    {lists:reverse(Odds), lists:reverse(Evens)}.
+%%  lib_misc:odds_and_evens2([1,2,3,4,5,6]).
+%%  {[1,3,5],[2,4,6]}
