@@ -1,0 +1,40 @@
+1> rr("records.hrl").
+[todo]
+2> #todo{}.
+#todo{status = reminder,who = tabitha,text = undefined}
+3> X1 = #todo{status = urgent, text = "Buy a house"}.
+#todo{status = urgent,who = tabitha,text = "Buy a house"}
+4> X2 = X1#todo{status = done}.
+#todo{status = done,who = tabitha,text = "Buy a house"}
+5> #todo{who = W, text = Txt} = X2.
+#todo{status = done,who = tabitha,text = "Buy a house"}
+6> W.
+tabitha
+7> Txt.
+"Buy a house"
+8> X2#todo.text.
+"Buy a house"
+9> X2.
+#todo{status = done,who = tabitha,text = "Buy a house"}
+10> rf(todo).
+ok
+11> X2.
+{todo,done,tabitha,"Buy a house"}
+
+
+Functions that pattern match on the fields of a record and that create new records
+clear_status(#todo{status = S, who = W} = R) ->
+    Inside the function S and W are bound to the field
+    R is the entire record
+    R#todo{status = finished}.
+
+To match a record of a particular type:
+
+do_something(X) when is_record(X, todo) ->
+    ...
+
+This clause matches when X is a record of type todo.
+
+Internally there are only tuples. Records are a syntactic convenience so you can refer to the different elements in a tuple by name and not by position.
+
+
