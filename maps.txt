@@ -1,0 +1,48 @@
+Basic map
+F1 = #{ a => 1, b => 2, c => 3 }.
+
+A map with nonatomic keys
+2> Facts = #{ {wife, mark} => "Tabitha", {age, mark} => 27, {daughter, mark} => "Ruby", {likes, felix} => []}.
+#{{age,mark} => 27,
+  {daughter,mark} => "Ruby",
+  {likes,felix} => [],
+  {wife,mark} => "Tabitha"}
+
+use => for assigning and := for setting new values
+
+1> Henry8 = #{ class => king, born => 1491, died => 1547 }.
+#{born => 1491,class => king,died => 1547}
+2> #{ born := B } = Henry8.
+#{born => 1491,class => king,died => 1547}
+3> B.
+1491
+
+Erlang does not garbage collect atoms, so continuously adding new atoms will, after a very long time, kill the Erlang VM.
+
+4> M = maps:new().
+#{}
+5> M.
+#{}
+6> erlang:is_map(M).
+true
+7> maps:to_list(M).
+[]
+8> M.
+#{}
+9> L = maps:to_list(M).
+[]
+10> L.
+[]
+11> maps:size(M).
+0
+13> Map = M#{ a => 1, b => 2 }.
+#{a => 1,b => 2}
+14> Map.
+#{a => 1,b => 2}
+15> maps:get(a, Map).
+1
+16> maps:find(b, Map).
+{ok,2}
+17> maps:keys(Map).
+[a,b]
+18> maps:to_json(Map).

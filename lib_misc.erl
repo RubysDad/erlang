@@ -10,7 +10,7 @@
 -author("mark").
 
 %% API
--export([for/3, odds_and_evens2/1]).
+-export([for/3, odds_and_evens2/1, count_characters/1]).
 
 %% creating our own custom for loop
 
@@ -48,3 +48,12 @@ odds_and_evens_acc([H|T], Odds, Evens) ->
     {lists:reverse(Odds), lists:reverse(Evens)}.
 %%  lib_misc:odds_and_evens2([1,2,3,4,5,6]).
 %%  {[1,3,5],[2,4,6]}
+
+count_characters(Str) ->
+  count_characters(Str, #{}).
+
+count_characters([H|T], #{ H := N } = X) ->
+  count_characters(T, X#{ H := N + 1 });
+  count_characters([H|T], X) ->
+    count_characters(T, X#{ H => 1});
+    count_characters([], X) -> X.
